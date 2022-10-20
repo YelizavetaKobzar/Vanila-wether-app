@@ -14,6 +14,42 @@ function formatDate(timestamp) {
   let day = days[date.getDay()];
   return `${day} ${hours}:${minutes}`;
 }
+function displayForcast() {
+  let focastELement = document.querySelector("#forecast");
+  let forcastHTML = `<div class="row">`;
+  let days = [
+    "Sunday",
+    "Monday",
+    "Tuesday",
+    "Wednsday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+  ];
+  days.forEach(function (day) {
+    forcastHTML =
+      forcastHTML +
+      ` 
+              <div class="col" style="width: 10rem">
+                <img
+                  src="http://openweathermap.org/img/wn/01d@2x.png"
+                  alt="sunny"
+                  width="42"
+                />
+                <div class="card-body">
+                  <h5 class="wether-forecast-day">${day}</h5>
+                </div>
+                <div class="forecast-temperature">
+                  <span class="forecast-temperature-max">13˚</span>
+                  <span class="forecast-temperature-min">3˚</span>
+                </div>
+              </div>
+              `;
+  });
+
+  forcastHTML = forcastHTML + `</div>`;
+  focastELement.innerHTML = forcastHTML;
+}
 
 function displayTemperature(response) {
   console.log(response.data);
@@ -53,3 +89,5 @@ function handleSubmit(event) {
 
 let form = document.querySelector("#search-form");
 form.addEventListener("submit", handleSubmit);
+
+displayForcast();
