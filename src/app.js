@@ -14,10 +14,9 @@ function formatDate(timestamp) {
   let day = days[date.getDay()];
   return `${day} ${hours}:${minutes}`;
 }
-function displayForcast(response) {
-  console.log(response.data.daily);
-  let focastELement = document.querySelector("#forecast");
-  let forcastHTML = `<div class="row">`;
+function formatDay(timestamp) {
+  let date = new Date(timestamp * 1000);
+  let day = date.getDay();
   let days = [
     "Sunday",
     "Monday",
@@ -27,25 +26,45 @@ function displayForcast(response) {
     "Friday",
     "Saturday",
   ];
-  days.forEach(function (day) {
-    forcastHTML =
-      forcastHTML +
-      ` 
+
+  return days[day];
+}
+
+function displayForcast(response) {
+  console.log(response.data.daily);
+  let forcast = response.data.daily;
+  let focastELement = document.querySelector("#forecast");
+  let forcastHTML = `<div class="row">`;
+
+  forcast.forEach(function (forcastDay, index) {
+    if (index < 6) {
+      forcastHTML =
+        forcastHTML +
+        ` 
               <div class="col" style="width: 10rem">
                 <img
-                  src="http://openweathermap.org/img/wn/01d@2x.png"
+                  src="http://openweathermap.org/img/wn/${
+                    forcastDay.weather[0].icon
+                  }@2x.png"
                   alt="sunny"
                   width="42"
                 />
                 <div class="card-body">
-                  <h5 class="wether-forecast-day">${day}</h5>
+                  <h5 class="wether-forecast-day">${formatDay(
+                    forcastDay.dt
+                  )}</h5>
                 </div>
                 <div class="forecast-temperature">
-                  <span class="forecast-temperature-max">13˚</span>
-                  <span class="forecast-temperature-min">3˚</span>
+                  <span class="forecast-temperature-max">${Math.round(
+                    forcastDay.temp.max
+                  )}</span>
+                  <span class="forecast-temperature-min">${Math.round(
+                    forcastDay.temp.min
+                  )}</span>
                 </div>
               </div>
               `;
+    }
   });
 
   forcastHTML = forcastHTML + `</div>`;
